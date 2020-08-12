@@ -32,7 +32,7 @@ import org.springframework.data.domain.Sort;
 import com.algo.trading.autobot.carpe.diem.config.AppContext;
 import com.algo.trading.autobot.carpe.diem.data.EquityOptions;
 import com.algo.trading.autobot.carpe.diem.data.EquityOptionsStrikePrice;
-import com.algo.trading.autobot.carpe.diem.utils.DateTimeUtils;
+import com.algo.trading.autobot.carpe.diem.utils.CommonUtils;
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import com.zerodhatech.models.LTPQuote;
 
@@ -74,7 +74,7 @@ public final class OptionsStrikePrice
         final String tradingSymbol)
     {
         EquityOptionsStrikePrice targetDocument = null;
-        DateTimeUtils.getCurrentWeekExpiryDate();
+        CommonUtils.getCurrentWeekExpiryDate();
         final Iterator<EquityOptionsStrikePrice> documentIterator =
             AppContext.getOptionsStrike().findAll(SORT_ORDER).iterator();
         while (documentIterator.hasNext()) {
@@ -124,14 +124,14 @@ public final class OptionsStrikePrice
 
                     if (hasWeeklyExpiry) {
                         niftyStrikes = AppContext.getEquityOptions().findByStrikeAndExpiry(niftyStrike,
-                            DateTimeUtils.getCurrentWeekExpiryDate());
+                            CommonUtils.getCurrentWeekExpiryDate());
                         bankNiftyStrikes = AppContext.getEquityOptions().findByStrikeAndExpiry(bankNiftyStrike,
-                            DateTimeUtils.getCurrentWeekExpiryDate());
+                            CommonUtils.getCurrentWeekExpiryDate());
                     } else {
                         niftyStrikes = AppContext.getEquityOptions().findByStrikeAndExpiry(niftyStrike,
-                            DateTimeUtils.getCurrentMonthExpiryDate());
+                            CommonUtils.getCurrentMonthExpiryDate());
                         bankNiftyStrikes = AppContext.getEquityOptions().findByStrikeAndExpiry(bankNiftyStrike,
-                            DateTimeUtils.getCurrentMonthExpiryDate());
+                            CommonUtils.getCurrentMonthExpiryDate());
                     }
 
                     EquityOptionsStrikePrice optionsStrikePrice = new EquityOptionsStrikePrice();

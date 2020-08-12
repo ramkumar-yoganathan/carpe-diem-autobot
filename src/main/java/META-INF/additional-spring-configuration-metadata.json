@@ -43,5 +43,20 @@
     "name": "spring.data.mongodb.repositories.enabled",
     "type": "java.lang.String",
     "description": "A description for 'spring.data.mongodb.repositories.enabled'"
+  },
+  {
+    "name": "spring.boot.config.stock.broker.logs",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.boot.config.stock.broker.logs'"
+  },
+  {
+    "name": "spring.boot.config.stock.broker.profit",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.boot.config.stock.broker.profit'"
+  },
+  {
+    "name": "spring.boot.config.stock.broker.risk",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.boot.config.stock.broker.risk'"
   }
 ]}

@@ -44,6 +44,10 @@ public class StockBroker
 
     private String url;
 
+    private String risk;
+
+    private String reward;
+
     public String getClient()
     {
         return client;
@@ -133,9 +137,29 @@ public class StockBroker
         return expiry;
     }
 
-    public void setExpiry(String expiry)
+    public void setExpiry(final String expiry)
     {
         this.expiry = expiry;
+    }
+
+    public String getRisk()
+    {
+        return risk;
+    }
+
+    public void setRisk(String risk)
+    {
+        this.risk = risk;
+    }
+
+    public String getReward()
+    {
+        return reward;
+    }
+
+    public void setReward(String reward)
+    {
+        this.reward = reward;
     }
 
 }

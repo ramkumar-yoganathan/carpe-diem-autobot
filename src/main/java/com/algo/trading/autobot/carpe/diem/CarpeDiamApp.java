@@ -41,7 +41,7 @@ import com.algo.trading.autobot.carpe.diem.data.StockBrokerSession;
 import com.algo.trading.autobot.carpe.diem.data.StockBrokerSessionRepo;
 import com.algo.trading.autobot.carpe.diem.jobs.NiftyCallBuyJobScheduler;
 import com.algo.trading.autobot.carpe.diem.jobs.NiftyPutBuyJobScheduler;
-import com.algo.trading.autobot.carpe.diem.utils.DateTimeUtils;
+import com.algo.trading.autobot.carpe.diem.utils.CommonUtils;
 import com.zerodhatech.kiteconnect.KiteConnect;
 
 @SpringBootApplication
@@ -92,7 +92,7 @@ public class CarpeDiamApp implements CommandLineRunner
         final KiteConnect kiteConnect =
             new KiteConnect(AppContext.getStockBroker().getKey(), AppContext.getStockBroker().hasLogs());
         final List<StockBrokerSession> brokerSession =
-            AppContext.getStockBrokerSession().findByLoginTime(DateTimeUtils.getToday());
+            AppContext.getStockBrokerSession().findByLoginTime(CommonUtils.getToday());
         if (!brokerSession.isEmpty()) {
             kiteConnect.setAccessToken(brokerSession.get(0).getAccessToken());
             AppContext.getStockBroker().setSession(kiteConnect);

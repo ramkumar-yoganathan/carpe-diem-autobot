@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import com.algo.trading.autobot.carpe.diem.config.AppContext;
 import com.algo.trading.autobot.carpe.diem.data.StockBrokerSession;
-import com.algo.trading.autobot.carpe.diem.utils.DateTimeUtils;
+import com.algo.trading.autobot.carpe.diem.utils.CommonUtils;
 import com.zerodhatech.kiteconnect.KiteConnect;
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import com.zerodhatech.models.User;
@@ -46,7 +46,7 @@ public final class AccessToken
 
         while (allSessions.hasNext()) {
             final StockBrokerSession eachSession = allSessions.next();
-            if (eachSession.getLoginTime().equalsIgnoreCase(DateTimeUtils.getToday())) {
+            if (eachSession.getLoginTime().equalsIgnoreCase(CommonUtils.getToday())) {
                 final String accessToken = eachSession.getAccessToken();
                 kiteSession.setAccessToken(accessToken);
                 AppContext.getStockBroker().setSession(kiteSession);
@@ -98,7 +98,7 @@ public final class AccessToken
 
         while (allSessions.hasNext()) {
             final StockBrokerSession eachSession = allSessions.next();
-            if (eachSession.getLoginTime().equalsIgnoreCase(DateTimeUtils.getToday())) {
+            if (eachSession.getLoginTime().equalsIgnoreCase(CommonUtils.getToday())) {
                 final String accessToken = eachSession.getAccessToken();
                 kiteSession.setAccessToken(accessToken);
                 AppContext.getStockBroker().setSession(kiteSession);

@@ -27,8 +27,10 @@ import org.slf4j.LoggerFactory;
 
 import com.algo.trading.autobot.carpe.diem.config.AppContext;
 import com.algo.trading.autobot.carpe.diem.config.Globals;
+import com.algo.trading.autobot.carpe.diem.config.RewardProfile;
 import com.algo.trading.autobot.carpe.diem.data.EquityOptionsStrikePrice;
 import com.algo.trading.autobot.carpe.diem.data.EquityOrders;
+import com.algo.trading.autobot.carpe.diem.utils.CommonUtils;
 import com.algo.trading.autobot.carpe.diem.zerodha.DataInterval;
 import com.algo.trading.autobot.carpe.diem.zerodha.Historical;
 import com.algo.trading.autobot.carpe.diem.zerodha.OptionsStrikePrice;
@@ -104,13 +106,15 @@ public final class CandleStickStrategy
                 dataHistorical.calculateAndReturnHistoricalCandleStickDataRange(String.valueOf(strikeInstrument),
                     candleStickDates, DataInterval.ONE_MINUTE);
             /** Get the historical data. **/
+            final RewardProfile rewardProfile =
+                RewardProfile.valueOf(AppContext.getStockBroker().getReward().toUpperCase());
             if (!candleStickHistoricalData.isEmpty()) {
                 final HistoricalData lastCandleStick = candleStickHistoricalData.get(0);
                 final EquityOrders equityOrders = new EquityOrders();
                 if ((lastCandleStick.open == lastCandleStick.low) && (!isOrderPlaced)
                     && (tradeBoughtAt != lastCandleStick.open)) {
                     tradeBoughtAt = lastCandleStick.open;
-                    desiredSellPrice = tradeBoughtAt + (tradeBoughtAt * 0.02);
+                    desiredSellPrice = CommonUtils.getRoundedPrice(tradeBoughtAt + rewardProfile.getPoint(), 1);
                     isOrderPlaced = true;
                     final OrderParams buyOrderParams = ordersInstance.getBuyOrderParams(strikeLotsize,
                         Constants.ORDER_TYPE_LIMIT, strikeSymbol, tradeBoughtAt);
@@ -125,12 +129,12 @@ public final class CandleStickStrategy
                     isOrderPlaced = false;
                     desiredSellPrice = 0.0;
                     final OrderParams sellOrderParams = ordersInstance.getSellOrderParams(strikeLotsize,
-                        Constants.ORDER_TYPE_LIMIT, strikeSymbol, lastCandleStick.high);
+                        Constants.ORDER_TYPE_LIMIT, strikeSymbol, desiredSellPrice);
                     final Order executedOrder = ordersInstance.placeOrder(sellOrderParams);
                     equityOrders.setSellTimeStamp(nowTimeStampParser.format(Calendar.getInstance().getTime()));
                     equityOrders.setSellPrice(lastCandleStick.high);
                     equityOrders.setSellOrderId(executedOrder.orderId);
-                    equityOrders.setRealisedPoints(lastCandleStick.high - tradeBoughtAt);
+                    equityOrders.setRealisedPoints(rewardProfile.getPoint());
                     AppContext.getOrders().save(equityOrders);
                 }
 
