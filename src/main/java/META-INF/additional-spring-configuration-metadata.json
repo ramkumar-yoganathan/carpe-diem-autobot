@@ -58,5 +58,20 @@
     "name": "spring.boot.config.stock.broker.risk",
     "type": "java.lang.String",
     "description": "A description for 'spring.boot.config.stock.broker.risk'"
+  },
+  {
+    "name": "spring.boot.config.stock.broker.reward",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.boot.config.stock.broker.reward'"
+  },
+  {
+    "name": "spring.boot.config.stock.broker.logs",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.boot.config.stock.broker.logs'"
+  },
+  {
+    "name": "spring.boot.config.stock.broker.order",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.boot.config.stock.broker.order'"
   }
 ]}

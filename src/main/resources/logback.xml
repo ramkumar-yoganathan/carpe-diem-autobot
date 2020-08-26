@@ -3,7 +3,7 @@
 	<appender name="STDOUT"
 		class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern> %d{MM-dd-yyyy HH:mm:ss} [%t] [%-5p] %-20c{4} - %M - %m%n
+			<pattern>%d{MM-dd-yyyy HH:mm:ss} [%-5p] %-20c{5} - %m%n
 			</pattern>
 		</encoder>
 	</appender>
@@ -11,7 +11,7 @@
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
 		<File>logs/application.log</File>
 		<encoder>
-			<pattern>%d{MM-dd-yyyy HH:mm:ss} [%t] [%-5p] %-20c{4} - %M - %m%n
+			<pattern>%d{MM-dd-yyyy HH:mm:ss} [%-5p] %-20c{4} - %M - %m%n
 			</pattern>
 		</encoder>
 	</appender>

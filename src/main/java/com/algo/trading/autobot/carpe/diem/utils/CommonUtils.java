@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2020 Ramkumar Yoganathan - ramkumar.yoganathan@outlook.com
+ * Copyright (C) 2020 Ramkumar Yoganathan
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
@@ -52,8 +52,13 @@ public final class CommonUtils
     public static String getThisWeekExpiryDate()
     {
         final Calendar calendar = Calendar.getInstance();
+        final String dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault());
+        final boolean isExpiryFriday = dayOfWeek.equalsIgnoreCase("Fri");
         while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY) {
             calendar.add(Calendar.DATE, 1);
+        }
+        if (isExpiryFriday) {
+            calendar.add(Calendar.DATE, 7);
         }
         calendar.add(Calendar.DATE, -1);
         return dateFormatter.format(calendar.getTime());

@@ -37,6 +37,7 @@ import com.algo.trading.autobot.carpe.diem.data.EquityFuturesRepo;
 import com.algo.trading.autobot.carpe.diem.data.EquityOptionsRepo;
 import com.algo.trading.autobot.carpe.diem.data.EquityOptionsStrikePriceRepo;
 import com.algo.trading.autobot.carpe.diem.data.EquityOrdersRepo;
+import com.algo.trading.autobot.carpe.diem.data.EquityTicksRepo;
 import com.algo.trading.autobot.carpe.diem.data.StockBrokerSession;
 import com.algo.trading.autobot.carpe.diem.data.StockBrokerSessionRepo;
 import com.algo.trading.autobot.carpe.diem.jobs.NiftyCallBuyJobScheduler;
@@ -68,6 +69,9 @@ public class CarpeDiamApp implements CommandLineRunner
     @Autowired
     EquityOrdersRepo equityOrdersRepo;
 
+    @Autowired
+    EquityTicksRepo equityTicksRepo;
+
     private static final String DEFAULT_GROUP = "AUTOBOT";
 
     private static final String BUY_CALL = "BUY_CALL";
@@ -82,13 +86,16 @@ public class CarpeDiamApp implements CommandLineRunner
     @Override
     public void run(final String... args) throws Exception
     {
+        /** App Configuration Load. **/
         AppContext.setStockBroker(stockBroker);
         AppContext.setStockBrokerSession(stockBrokerSession);
         AppContext.setOptionStrikePrice(optionsStrike);
         AppContext.setOptionsRepository(equityOptionsRepo);
         AppContext.setFuturesRepository(equityFuturesRepo);
         AppContext.setOrdersRepository(equityOrdersRepo);
+        AppContext.setTicksRepository(equityTicksRepo);
 
+        /** Stock Broker Connect. **/
         final KiteConnect kiteConnect =
             new KiteConnect(AppContext.getStockBroker().getKey(), AppContext.getStockBroker().hasLogs());
         final List<StockBrokerSession> brokerSession =
@@ -98,17 +105,21 @@ public class CarpeDiamApp implements CommandLineRunner
             AppContext.getStockBroker().setSession(kiteConnect);
         }
 
+        /** Quartz Scheduler. **/
         final SchedulerFactory schedulerFactory = new StdSchedulerFactory();
         final Scheduler scheduler = schedulerFactory.getScheduler();
         scheduler.start();
 
+        /** Nifty CE Buy. **/
         final Trigger runCallBuyTrigger = TriggerBuilder.newTrigger().withIdentity(BUY_CALL).build();
-        final Trigger runPutBuyTrigger = TriggerBuilder.newTrigger().withIdentity(BUY_PUT).build();
         final JobDetail algoNiftyCallBuyJob =
             JobBuilder.newJob(NiftyCallBuyJobScheduler.class).withIdentity(BUY_CALL, DEFAULT_GROUP).build();
+        scheduler.scheduleJob(algoNiftyCallBuyJob, runCallBuyTrigger);
+
+        /** Nifty PE Buy. **/
+        final Trigger runPutBuyTrigger = TriggerBuilder.newTrigger().withIdentity(BUY_PUT).build();
         final JobDetail algoNiftyPutBuyJob =
             JobBuilder.newJob(NiftyPutBuyJobScheduler.class).withIdentity(BUY_PUT, DEFAULT_GROUP).build();
-        scheduler.scheduleJob(algoNiftyCallBuyJob, runCallBuyTrigger);
         scheduler.scheduleJob(algoNiftyPutBuyJob, runPutBuyTrigger);
     }
 }

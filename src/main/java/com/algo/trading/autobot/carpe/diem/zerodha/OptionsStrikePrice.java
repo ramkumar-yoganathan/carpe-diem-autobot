@@ -134,6 +134,8 @@ public final class OptionsStrikePrice
                             CommonUtils.getCurrentMonthExpiryDate());
                     }
 
+                    AppContext.getOptionsStrike().deleteAll();
+
                     EquityOptionsStrikePrice optionsStrikePrice = new EquityOptionsStrikePrice();
                     optionsStrikePrice.setInstrumentType("NIFTY");
                     optionsStrikePrice.setTimeStamp(dateFormatter.format(Calendar.getInstance().getTime()));

@@ -21,7 +21,7 @@ import org.quartz.JobExecutionException;
 
 import com.algo.trading.autobot.carpe.diem.config.AppContext;
 import com.algo.trading.autobot.carpe.diem.config.Globals;
-import com.algo.trading.autobot.carpe.diem.strategy.CandleStickStrategy;
+import com.algo.trading.autobot.carpe.diem.strategy.CandleStickCallStrategy;
 
 public class BankNiftyPutBuyJobScheduler implements Job
 {
@@ -29,6 +29,6 @@ public class BankNiftyPutBuyJobScheduler implements Job
     public void execute(final JobExecutionContext context) throws JobExecutionException
     {
         AppContext.getOptionsStrike().deleteAll();
-        CandleStickStrategy.runBot(Globals.BANKNIFTY, Globals.PUT);
+        CandleStickCallStrategy.runBot(Globals.BANKNIFTY, Globals.PUT);
     }
 }

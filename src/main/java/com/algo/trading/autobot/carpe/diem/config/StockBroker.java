@@ -25,6 +25,7 @@ import com.zerodhatech.kiteconnect.KiteConnect;
 @Component
 public class StockBroker
 {
+    private String order;
 
     private String client;
 
@@ -147,7 +148,7 @@ public class StockBroker
         return risk;
     }
 
-    public void setRisk(String risk)
+    public void setRisk(final String risk)
     {
         this.risk = risk;
     }
@@ -157,9 +158,19 @@ public class StockBroker
         return reward;
     }
 
-    public void setReward(String reward)
+    public void setReward(final String reward)
     {
         this.reward = reward;
+    }
+
+    public String getOrder()
+    {
+        return order;
+    }
+
+    public void setOrder(String order)
+    {
+        this.order = order;
     }
 
 }

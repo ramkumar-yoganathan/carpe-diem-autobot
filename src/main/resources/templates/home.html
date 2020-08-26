@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carpe-Diam - DashBoard</title>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+<link href="font-awesome/css/all.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+<script>
+$(document).ready(
+	    function() {
+	        $.ajax({
+	            type: "GET",
+	            url: "/home",
+	            success: function(result) {
+	                $.each(result, function(i, order) {
+
+	                    var customerRow = '<tr>' + '<td>' + team.id + '</td>' + '<td>' + order.strikeSymbol + '</td>'
+	                    '</tr>';
+
+	                    $('#tblOrders tbody').append(customerRow);
+
+	                });
+
+	                $("#tblOrders tbody tr:odd").addClass("info");
+	                $("#tblOrders tbody tr:even").addClass("success");
+	            },
+	            error: function(e) {
+	                alert("ERROR: ", e);
+	                console.log("ERROR: ", e);
+	            }
+	        });
+
+	    })
+</script>
+</head>
+<body>
+	<div class="tabs is-toggle is-fullwidth is-large">
+		<ul>
+			<li class="is-active"><a> <span class="icon"><i
+						class="fas fa-shopping-cart" aria-hidden="true"></i></span> <span>Orders</span>
+			</a></li>
+			<li><a> <span class="icon"><i class="fas fa-wallet"
+						aria-hidden="true"></i></span> <span>Profit/Loss</span>
+			</a></li>
+			<li><a> <span class="icon"><i class="fas fa-tag"
+						aria-hidden="true"></i></span> <span>Strike</span>
+			</a></li>
+			<li><a> <span class="icon"><i class="fas fa-history"
+						aria-hidden="true"></i></span> <span>History</span>
+			</a></li>
+		</ul>
+	</div>
+	<div class="table-container">
+		<table class="table is-fullwidth is-hoverable is-bordered"
+			id="tblOrders">
+			<thead>
+				<tr>
+					<th>Strike Symbol</th>
+					<th>Strike Expiry</th>
+					<th>Buy Price</th>
+					<th>Buy Quantity</th>
+					<th>Buy TimeStamp</th>
+					<th>Buy OrderId</th>
+					<th>Sell Price</th>
+					<th>Sell TimeStamp</th>
+					<th>Sell OrderId</th>
+					<th>Sell Quantity</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="equityOrder: ${EquityOrders}">
+					<td th:text="${equityOrder.strikeSymbol}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
