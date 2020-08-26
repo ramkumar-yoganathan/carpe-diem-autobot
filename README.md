@@ -1,9 +1,8 @@
+# Carpe-Diam AutoBot
+An autobot that does the algorithmic trading of NIFTY/BANK NIFTY Buy CE/PE Options with Risk and Reward Profile. 
+
 # Disclaimer of libility
 The material and information contained on this repository is for educational purposes only. You should not rely upon the material or information on the repository as a basis for making any business, legal or any other decisions. Any reliance you place on this material is thereforce strictly at your risk. 
-
-# Carpe-Diam AutoBot
-
-An autobot that does the algorithmic trading of NIFTY/BANK NIFTY Buy CE/PE Options with Risk and Reward Profile. 
 
 ### Features
 - Support Quartz Scheduler
