@@ -73,5 +73,10 @@
     "name": "spring.boot.config.stock.broker.order",
     "type": "java.lang.String",
     "description": "A description for 'spring.boot.config.stock.broker.order'"
+  },
+  {
+    "name": "spring.boot.config.stock.broker.logs",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.boot.config.stock.broker.logs'"
   }
 ]}

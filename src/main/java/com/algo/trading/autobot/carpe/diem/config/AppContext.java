@@ -19,6 +19,7 @@ import com.algo.trading.autobot.carpe.diem.data.EquityFuturesRepo;
 import com.algo.trading.autobot.carpe.diem.data.EquityOptionsRepo;
 import com.algo.trading.autobot.carpe.diem.data.EquityOptionsStrikePriceRepo;
 import com.algo.trading.autobot.carpe.diem.data.EquityOrdersRepo;
+import com.algo.trading.autobot.carpe.diem.data.EquityStocksRepo;
 import com.algo.trading.autobot.carpe.diem.data.EquityTicksRepo;
 import com.algo.trading.autobot.carpe.diem.data.StockBrokerSessionRepo;
 
@@ -37,6 +38,8 @@ public final class AppContext
     private static EquityOrdersRepo equityOrdersRepo;
 
     private static EquityTicksRepo equityTicksRepo;
+
+    private static EquityStocksRepo equityStocksRepo;
 
     public static EquityFuturesRepo getEquityFutures()
     {
@@ -83,6 +86,11 @@ public final class AppContext
         AppContext.equityTicksRepo = equityTicksRepo;
     }
 
+    public static void setStocksRepository(final EquityStocksRepo equityStocksRepo)
+    {
+        AppContext.equityStocksRepo = equityStocksRepo;
+    }
+
     public static void setOrdersRepository(final EquityOrdersRepo equityOrdersRepo)
     {
         AppContext.equityOrdersRepo = equityOrdersRepo;
@@ -110,6 +118,11 @@ public final class AppContext
 
     private AppContext()
     {
+    }
+
+    public static EquityStocksRepo getEquityStocks()
+    {
+        return equityStocksRepo;
     }
 
 }

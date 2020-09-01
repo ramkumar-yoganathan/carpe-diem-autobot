@@ -37,14 +37,17 @@ import com.algo.trading.autobot.carpe.diem.data.EquityFuturesRepo;
 import com.algo.trading.autobot.carpe.diem.data.EquityOptionsRepo;
 import com.algo.trading.autobot.carpe.diem.data.EquityOptionsStrikePriceRepo;
 import com.algo.trading.autobot.carpe.diem.data.EquityOrdersRepo;
+import com.algo.trading.autobot.carpe.diem.data.EquityStocksRepo;
 import com.algo.trading.autobot.carpe.diem.data.EquityTicksRepo;
 import com.algo.trading.autobot.carpe.diem.data.StockBrokerSession;
 import com.algo.trading.autobot.carpe.diem.data.StockBrokerSessionRepo;
-import com.algo.trading.autobot.carpe.diem.jobs.NiftyCallBuyJobScheduler;
-import com.algo.trading.autobot.carpe.diem.jobs.NiftyPutBuyJobScheduler;
+import com.algo.trading.autobot.carpe.diem.jobs.PreOpeningAnalyzerJobScheduler;
 import com.algo.trading.autobot.carpe.diem.utils.CommonUtils;
 import com.zerodhatech.kiteconnect.KiteConnect;
 
+/**
+ * Carpe Diam Main App.
+ */
 @SpringBootApplication
 @EnableAutoConfiguration
 @ComponentScan
@@ -61,6 +64,9 @@ public class CarpeDiamApp implements CommandLineRunner
     EquityOptionsStrikePriceRepo optionsStrike;
 
     @Autowired
+    EquityStocksRepo equityStocks;
+
+    @Autowired
     EquityFuturesRepo equityFuturesRepo;
 
     @Autowired
@@ -73,10 +79,6 @@ public class CarpeDiamApp implements CommandLineRunner
     EquityTicksRepo equityTicksRepo;
 
     private static final String DEFAULT_GROUP = "AUTOBOT";
-
-    private static final String BUY_CALL = "BUY_CALL";
-
-    private static final String BUY_PUT = "BUY_PUT";
 
     public static void main(final String[] args)
     {
@@ -94,6 +96,10 @@ public class CarpeDiamApp implements CommandLineRunner
         AppContext.setFuturesRepository(equityFuturesRepo);
         AppContext.setOrdersRepository(equityOrdersRepo);
         AppContext.setTicksRepository(equityTicksRepo);
+        AppContext.setStocksRepository(equityStocks);
+
+        /** Start the tunnel server. **/
+        // NgrokUtils.startTunnelingServer();
 
         /** Stock Broker Connect. **/
         final KiteConnect kiteConnect =
@@ -110,16 +116,10 @@ public class CarpeDiamApp implements CommandLineRunner
         final Scheduler scheduler = schedulerFactory.getScheduler();
         scheduler.start();
 
-        /** Nifty CE Buy. **/
-        final Trigger runCallBuyTrigger = TriggerBuilder.newTrigger().withIdentity(BUY_CALL).build();
-        final JobDetail algoNiftyCallBuyJob =
-            JobBuilder.newJob(NiftyCallBuyJobScheduler.class).withIdentity(BUY_CALL, DEFAULT_GROUP).build();
-        scheduler.scheduleJob(algoNiftyCallBuyJob, runCallBuyTrigger);
-
-        /** Nifty PE Buy. **/
-        final Trigger runPutBuyTrigger = TriggerBuilder.newTrigger().withIdentity(BUY_PUT).build();
-        final JobDetail algoNiftyPutBuyJob =
-            JobBuilder.newJob(NiftyPutBuyJobScheduler.class).withIdentity(BUY_PUT, DEFAULT_GROUP).build();
-        scheduler.scheduleJob(algoNiftyPutBuyJob, runPutBuyTrigger);
+        /** Pre Open Market Analyzer. **/
+        final Trigger runPreOpenAnalyzeTrigger = TriggerBuilder.newTrigger().withIdentity(DEFAULT_GROUP).build();
+        final JobDetail algoPreOpenAnalyzeTrigger =
+            JobBuilder.newJob(PreOpeningAnalyzerJobScheduler.class).withIdentity(DEFAULT_GROUP, DEFAULT_GROUP).build();
+        scheduler.scheduleJob(algoPreOpenAnalyzeTrigger, runPreOpenAnalyzeTrigger);
     }
 }
