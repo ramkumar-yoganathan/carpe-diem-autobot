@@ -22,7 +22,8 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 
 /**
- * Mongo Db configuration.
+ * Mongo Db configuration. Inorder to use this class, you should have a local instance is running else change the
+ * desired host.
  */
 @Configuration
 public class AppConfig
